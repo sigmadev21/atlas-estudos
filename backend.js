@@ -3,25 +3,32 @@
   let client = null;
   let session = null;
   let sessionHandler = () => {};
-  const configured = Boolean(cfg.url && cfg.publishableKey && cfg.adminEmail && window.supabase?.createClient);
+  let isAdmin = false;
+  const configured = Boolean(cfg.url && cfg.publishableKey && window.supabase?.createClient);
+
+  async function syncSession(nextSession) {
+    session = nextSession;
+    isAdmin = false;
+    if (session) {
+      const {data, error} = await client.rpc("is_atlas_admin");
+      isAdmin = !error && data === true;
+    }
+    sessionHandler(session, isAdmin);
+  }
 
   function init() {
     if (!configured) return false;
     client = window.supabase.createClient(cfg.url, cfg.publishableKey);
-    client.auth.getSession().then(({data}) => {
-      session = data.session;
-      sessionHandler(session);
-    });
+    client.auth.getSession().then(({data}) => syncSession(data.session));
     client.auth.onAuthStateChange((_event, newSession) => {
-      session = newSession;
-      sessionHandler(session);
+      setTimeout(() => syncSession(newSession), 0);
     });
     return true;
   }
 
   function requireAdmin() {
     if (!client) throw new Error("O banco do Atlas ainda não foi configurado.");
-    if (!session) throw new Error("Entre como admin para fazer alterações.");
+    if (!session || !isAdmin) throw new Error("Entre com a conta admin autorizada para fazer alterações.");
   }
 
   async function loadSharedData() {
@@ -38,13 +45,18 @@
     };
   }
 
-  async function login(username, password) {
+  async function login(email, password) {
     if (!client) throw new Error("O banco compartilhado ainda não está conectado.");
-    if (String(username).trim().toLowerCase() !== "admin") throw new Error("Usuário ou senha incorretos.");
-    const {data, error} = await client.auth.signInWithPassword({email: cfg.adminEmail, password});
-    if (error) throw new Error("Não foi possível entrar. Confere a conta admin configurada no Supabase.");
-    session = data.session;
-    sessionHandler(session);
+    const {data, error} = await client.auth.signInWithPassword({email: String(email).trim(), password});
+    if (error) throw new Error("Não foi possível entrar. Confere o email e a senha da conta criada no Supabase.");
+    await syncSession(data.session);
+    if (!isAdmin) {
+      await client.auth.signOut();
+      session = null;
+      isAdmin = false;
+      sessionHandler(null, false);
+      throw new Error("Essa conta ainda não tem permissão de admin no Atlas.");
+    }
     return session;
   }
 
@@ -53,7 +65,8 @@
     const {error} = await client.auth.signOut();
     if (error) throw error;
     session = null;
-    sessionHandler(null);
+    isAdmin = false;
+    sessionHandler(null, false);
   }
 
   async function saveMaterial(material, file) {
@@ -84,6 +97,7 @@
   window.AtlasBackend = {
     configured, init, loadSharedData, login, logout, saveMaterial, saveExam,
     getSession: () => session,
-    setSessionHandler: handler => {sessionHandler = handler; sessionHandler(session);}
+    isAdmin: () => isAdmin,
+    setSessionHandler: handler => {sessionHandler = handler; sessionHandler(session, isAdmin);}
   };
 })();
