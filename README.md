@@ -9,8 +9,10 @@ Um espaço pessoal para reunir materiais, praticar com quizzes e acompanhar as p
 - Favoritos salvos neste navegador.
 - Quizzes interativos com pontuação e explicações para revisar as respostas erradas.
 - Datas de provas com contagem regressiva.
-- Modo foco, tema azul-escuro, visual Liquid Glass e navegação adaptada para celular e computador.
+- Modo foco, tema roxo-escuro, visual Liquid Glass e navegação adaptada para celular e computador.
 - Painel local para adicionar materiais e provas.
+
+O acervo começa vazio: não há materiais ou datas de demonstração.
 
 ## Como usar
 
