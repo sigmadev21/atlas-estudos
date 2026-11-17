@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07162d">
+  <meta name="description" content="Atlas — seu espaço pessoal para organizar estudos, quizzes, slides e provas.">
+  <title>Atlas — seu espaço de estudos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <aside class="sidebar glass-panel">
+      <a class="brand" href="#inicio" data-view="dashboard" aria-label="Atlas início">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>atlas</strong><small>seu espaço de estudos</small></span>
+      </a>
+      <div class="side-label">MENU</div>
+      <nav class="side-nav" aria-label="Navegação principal">
+        <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span>Visão geral</button>
+        <button class="nav-item" data-view="library"><span class="nav-icon">▤</span>Biblioteca<span class="nav-count" id="library-count">0</span></button>
+        <button class="nav-item" data-view="quizzes"><span class="nav-icon">✳</span>Quizzes</button>
+        <button class="nav-item" data-view="favorites"><span class="nav-icon">♡</span>Favoritos</button>
+        <button class="nav-item" data-view="exams"><span class="nav-icon">◷</span>Provas</button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-tip glass-subtle">
+        <span class="tip-spark">✦</span><strong>Um passo de cada vez.</strong>
+        <p>Estudar um pouco hoje já conta.</p>
+      </div>
+      <div class="profile-row"><div class="avatar">A</div><div><strong>Área pessoal</strong><small>Seu Atlas</small></div><span class="profile-dots">•••</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark"><span></span><span></span><span></span></span><strong>atlas</strong></div>
+        <div class="breadcrumbs"><span>Seu espaço</span><span class="crumb-sep">/</span><strong id="breadcrumb-current">Visão geral</strong></div>
+        <div class="top-actions">
+          <label class="search-box" for="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Buscar materiais..." autocomplete="off"><kbd>⌘ K</kbd></label>
+          <button class="icon-button focus-button" id="focus-toggle" aria-label="Ativar modo foco" title="Modo foco">◉</button>
+          <button class="admin-button" id="admin-open"><span>＋</span><span class="admin-label">Painel admin</span></button>
+        </div>
+      </header>
+
+      <section id="view-root" class="view-root" aria-live="polite"></section>
+      <footer class="footer-note">Feito pra aprender no teu ritmo <span>✦</span></footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Navegação mobile">
+    <button class="mobile-nav-item active" data-view="dashboard"><span>⌂</span><small>Início</small></button>
+    <button class="mobile-nav-item" data-view="library"><span>▤</span><small>Materiais</small></button>
+    <button class="mobile-nav-item" data-view="quizzes"><span>✳</span><small>Quizzes</small></button>
+    <button class="mobile-nav-item" data-view="favorites"><span>♡</span><small>Salvos</small></button>
+    <button class="mobile-nav-item" data-view="exams"><span>◷</span><small>Provas</small></button>
+  </nav>
+
+  <dialog class="modal" id="admin-modal">
+    <form method="dialog" class="modal-card glass-panel" id="admin-form">
+      <div class="modal-head"><div><span class="eyebrow">ORGANIZAÇÃO</span><h2>Painel admin</h2><p>Adicione materiais e provas ao seu Atlas.</p></div><button class="close-button" value="cancel" aria-label="Fechar">×</button></div>
+      <div class="tabs"><button type="button" class="tab-button active" data-admin-tab="material">Novo material</button><button type="button" class="tab-button" data-admin-tab="exam">Nova prova</button></div>
+      <div class="admin-pane active" id="material-pane">
+        <label>Título<input name="title" required placeholder="Ex.: Revisão de funções"></label>
+        <div class="form-grid"><label>Matéria<input name="subject" required placeholder="Ex.: Matemática"></label><label>Tipo<select name="type" id="material-type"><option>PDF</option><option>Slides</option><option>Quiz</option><option>Resumo</option><option>Link</option></select></label></div>
+        <label class="quiz-input-wrap" id="quiz-input-wrap" hidden>Perguntas do quiz <span class="optional">(uma por linha)</span><textarea name="quiz-questions" rows="4" placeholder="Pergunta | opção 1 | opção 2 | opção 3 | opção 4 | número da resposta | explicação"></textarea><span class="field-help">Exemplo: Quanto é 2 + 2? | 3 | 4 | 5 | 6 | 2 | 2 + 2 = 4.</span></label>
+        <label>Descrição<textarea name="description" rows="3" placeholder="O que tem neste material?"></textarea></label>
+        <label>Link do material <span class="optional">(opcional)</span><input name="url" type="url" placeholder="https://... ou caminho do arquivo"></label>
+        <button class="primary-button full-button" type="submit" value="save-material">Adicionar à biblioteca <span>↗</span></button>
+      </div>
+      <div class="admin-pane" id="exam-pane">
+        <label>Nome da prova<input name="exam-title" placeholder="Ex.: Prova de Matemática"></label>
+        <div class="form-grid"><label>Matéria<input name="exam-subject" placeholder="Ex.: Matemática"></label><label>Data<input name="exam-date" type="date"></label></div>
+        <button class="primary-button full-button" type="button" id="save-exam">Adicionar prova <span>↗</span></button>
+      </div>
+      <p class="local-note"><span>ⓘ</span> Este painel salva os dados neste navegador. Como o GitHub Pages é estático, ele não publica alterações no repositório automaticamente.</p>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="detail-modal"><div class="modal-card glass-panel detail-card"><button class="close-button detail-close" aria-label="Fechar">×</button><div id="detail-content"></div></div></dialog>
+  <dialog class="modal" id="quiz-modal"><div class="modal-card glass-panel quiz-card"><button class="close-button quiz-close" aria-label="Fechar">×</button><div id="quiz-content"></div></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
