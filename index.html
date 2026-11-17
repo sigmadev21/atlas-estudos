@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="styles.css?v=3">
   <script src="supabase-config.js?v=3" defer></script>
   <script src="backend.js?v=3" defer></script>
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=5" defer></script>
 </head>
 <body>
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
@@ -64,7 +64,7 @@
 
   <dialog class="modal" id="admin-modal">
     <form method="dialog" class="modal-card glass-panel" id="admin-form">
-      <div class="modal-head"><div><span class="eyebrow">ORGANIZAÇÃO</span><h2>Painel admin</h2><p>Adicione materiais e provas ao seu Atlas.</p></div><button class="close-button" value="cancel" aria-label="Fechar">×</button></div>
+      <div class="modal-head"><div><span class="eyebrow">ORGANIZAÇÃO</span><h2>Painel admin</h2><p>Adicione materiais e provas ao seu Atlas.</p></div><button class="close-button" id="admin-close" type="button" aria-label="Fechar">×</button></div>
       <div id="admin-login-pane" class="admin-login-pane">
         <p class="backend-status" id="backend-status">Conectando ao banco de dados…</p>
         <label>Email da conta admin<input id="admin-email" type="email" autocomplete="username" placeholder="E-mail usado no Supabase" required></label>
