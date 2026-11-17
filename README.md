@@ -5,7 +5,7 @@ Um espaço pessoal para reunir materiais, praticar com quizzes e acompanhar as p
 ## O que tem
 
 - Biblioteca de PDFs, slides, resumos, links e quizzes, com busca e filtros.
-- Página inicial com materiais recentes, contagem de conteúdos e próximas provas.
+- Página inicial com os materiais cadastrados, contagens e próximas provas.
 - Favoritos salvos neste navegador.
 - Quizzes interativos com pontuação e explicações para revisar as respostas erradas.
 - Datas de provas com contagem regressiva.
@@ -24,7 +24,7 @@ Para cadastrar um quiz no painel, escolha o tipo **Quiz** e escreva uma pergunta
 
 ## Personalização
 
-Os materiais e datas de exemplo ficam no início de `app.js`. O visual e os pontos de quebra responsivos estão em `styles.css`.
+Os materiais e as datas são cadastrados pelo painel e salvos neste navegador. O visual e os pontos de quebra responsivos estão em `styles.css`.
 
 ## Licença
 
