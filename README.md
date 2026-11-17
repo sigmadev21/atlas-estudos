@@ -14,14 +14,14 @@ Um espaço pessoal para organizar materiais de estudo, praticar com quizzes e ac
 
 ## Conectar o Supabase
 
-1. Crie um projeto Supabase e um usuário em **Authentication → Users** para o email admin. Defina a senha diretamente no Supabase.
-2. Em `supabase/schema.sql`, substitua `YOUR_ADMIN_EMAIL` pelo email desse usuário e execute o arquivo no SQL Editor do Supabase.
-3. Copie o Project URL e a publishable key para `supabase-config.js`, junto com o mesmo email em `adminEmail`.
-4. Configure a URL do GitHub Pages como URL permitida no Supabase Auth.
+1. Crie um usuário em **Authentication → Users**. Digite o email e uma senha nova diretamente no Supabase; não use a senha do banco.
+2. Execute `supabase/schema.sql` no SQL Editor do projeto.
+3. Abra **Authentication → Users**, copie o ID desse usuário, e execute no SQL Editor: `insert into public.atlas_admins (user_id) values ('COLE-O-ID-AQUI');`
+4. Em **Authentication → URL Configuration**, adicione a URL do site publicado em **Redirect URLs**.
 
-A tela usa o nome de usuário `admin` e encaminha a autenticação para o email configurado. A publishable key foi feita para uso no frontend com RLS habilitado. **Nunca coloque a service-role key ou outra chave secreta no site.**
+A tela pede o email e a senha do usuário admin. A autorização de administrador fica no banco pelo ID da conta e não expõe o email no repositório. A publishable key foi feita para uso no frontend com RLS habilitado. **Nunca coloque a service-role key ou outra chave secreta no site.**
 
-Até o Supabase ser configurado, o site não aceita novos materiais ou provas e mostra um aviso de conexão pendente. Depois, qualquer visitante pode ler os dados; somente o email admin configurado pode inserir dados, conforme as políticas RLS.
+O projeto Atlas já inclui a URL e a publishable key do Supabase. Qualquer visitante pode ler os materiais e provas; somente uma conta explicitamente adicionada à tabela `atlas_admins` pode inserir dados, conforme as políticas RLS.
 
 ## Como cadastrar quizzes
 
